@@ -17,7 +17,7 @@ import BrowsePublic from './pages/BrowsePublic';
 export default function App(){
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      <Navbar></Navbar>
       <main className="flex-1 container">
          <Routes>
           <Route path="/" element={<Home/>} />
@@ -31,7 +31,8 @@ export default function App(){
         </Routes>
       </main>
     
-      <Footer></Footer>
+     <Footer></Footer>
+      <ToastContainer position="top-right" />
     </div>
   );
 }
