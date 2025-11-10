@@ -5,6 +5,9 @@ import Login from './pages/Login';
 import { ToastContainer } from 'react-toastify';
 import Footer from './components/Footer';
 import Register from './pages/Register';
+import MyHabits from './pages/MyHabits';
+import HabitDetails from './pages/HabitDetails';
+
 
 export default function App(){
   return (
@@ -15,6 +18,8 @@ export default function App(){
           
           <Route path="/login" element={<Login/>} />
           <Route path="/register" element={<Register/>} />
+          <Route path="/my-habits" element={<MyHabits/>} />
+          <Route path="/habits/:id" element={<HabitDetails/>} />
         </Routes>
       </main>
     
