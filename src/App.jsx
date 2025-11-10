@@ -9,6 +9,9 @@ import MyHabits from './pages/MyHabits';
 import HabitDetails from './pages/HabitDetails';
 import NotFound from './pages/NotFound';
 import Home from './pages/Home';
+import ProtectedRoute from './components/ProtectedRoute';
+import AddHabit from './pages/AddHabit';
+import BrowsePublic from './pages/BrowsePublic';
 
 
 export default function App(){
@@ -20,7 +23,9 @@ export default function App(){
           <Route path="/" element={<Home/>} />
           <Route path="/login" element={<Login/>} />
           <Route path="/register" element={<Register/>} />
-          <Route path="/my-habits" element={<MyHabits/>} />
+          <Route path="/add-habit" element={<ProtectedRoute><AddHabit/></ProtectedRoute>} />
+          <Route path="/my-habits" element={<ProtectedRoute><MyHabits/></ProtectedRoute>} />
+          <Route path="/browse" element={<BrowsePublic/>} />
           <Route path="/habits/:id" element={<HabitDetails/>} />
           <Route path="*" element={<NotFound/>} />
         </Routes>
