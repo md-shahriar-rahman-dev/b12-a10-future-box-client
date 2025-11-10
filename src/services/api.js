@@ -1,4 +1,3 @@
-// axios wrapper that attaches firebase ID token automatically for protected routes
 import axios from 'axios';
 import { getAuth } from 'firebase/auth';
 
