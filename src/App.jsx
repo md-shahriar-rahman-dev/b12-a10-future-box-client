@@ -9,11 +9,9 @@ export default function App(){
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 container">
-        <Routes>
-          <Route path="/" element={<Home/>} />
-        </Routes>
+        
       </main>
-      <Footer />
+    
       <ToastContainer position="top-right" />
     </div>
   );
