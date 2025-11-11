@@ -9,12 +9,12 @@ export default function HabitCard({ habit: initialHabit }) {
   const { user } = useAuth();
 
   const markComplete = async () => {
+    if (!user) return Swal.fire('Login required', 'Please login to mark complete', 'info');
     try {
-      const res = await api.post(`/habits/${habit._id}/complete`, {}, {
-        headers: { Authorization: `Bearer ${user?.accessToken}` }
-      });
-      setHabit(res.data.habit);
-      Swal.fire('✅ Done!', 'You marked this habit complete for today!', 'success');
+      const res = await api.post(`/habits/${habit._id}/complete`);
+      const updated = res.data.habit || res.data;
+      setHabit(updated);
+      Swal.fire('Nice!', res.data.message || 'Marked complete for today', 'success');
     } catch (err) {
       Swal.fire('Error', err.response?.data?.message || err.message, 'error');
     }

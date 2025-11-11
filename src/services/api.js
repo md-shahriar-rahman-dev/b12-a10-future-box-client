@@ -1,3 +1,4 @@
+// src/services/api.js
 import axios from 'axios';
 import { getAuth } from 'firebase/auth';
 
@@ -17,7 +18,6 @@ api.interceptors.request.use(async (config) => {
       config.headers.Authorization = `Bearer ${token}`;
     }
   } catch (err) {
-    // token attach failed; continue without token
     console.warn('Could not attach token:', err?.message || err);
   }
   return config;

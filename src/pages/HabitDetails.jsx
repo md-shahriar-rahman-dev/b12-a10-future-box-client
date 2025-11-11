@@ -3,30 +3,36 @@ import { useParams, Link } from 'react-router-dom';
 import api from '../services/api';
 import Swal from 'sweetalert2';
 import { useAuth } from '../context/AuthContext';
+import Spinner from '../components/Spinner';
+
 
 export default function HabitDetails() {
   const { id } = useParams();
   const [habit, setHabit] = useState(null);
+  const [loading, setLoading] = useState(true);
   const { user } = useAuth();
 
   useEffect(() => {
+    setLoading(true);
     api.get(`/habits/${id}`)
       .then(res => setHabit(res.data.habit || res.data))
-      .catch(() => Swal.fire('Error', 'Could not load habit details', 'error'));
+      .catch(() => Swal.fire('Error', 'Could not load habit details', 'error'))
+      .finally(() => setLoading(false));
   }, [id]);
 
   const markComplete = async () => {
+    if (!user) return Swal.fire('Login required', 'Please login to mark complete', 'info');
     try {
-      const res = await api.post(`/habits/${id}/complete`, {}, {
-        headers: { Authorization: `Bearer ${user?.accessToken}` }
-      });
-      setHabit(res.data.habit);
-      Swal.fire('✅ Done!', 'You marked this habit complete for today!', 'success');
+      const res = await api.post(`/habits/${id}/complete`);
+      const updated = res.data.habit || res.data;
+      setHabit(updated);
+      Swal.fire('Done', res.data.message || 'Marked complete', 'success');
     } catch (err) {
       Swal.fire('Error', err.response?.data?.message || err.message, 'error');
     }
   };
 
+  if (loading) return <div className="p-6"><Spinner size={6} /></div>;
   if (!habit) return <div className="p-6">Loading...</div>;
 
   const progressPercent = (() => {

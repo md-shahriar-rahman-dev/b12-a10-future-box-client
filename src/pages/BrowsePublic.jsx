@@ -1,13 +1,12 @@
+// src/pages/BrowsePublic.jsx
 import React, { useEffect, useState } from 'react';
 import api from '../services/api';
 import HabitCard from '../components/HabitCard';
 
-export default function BrowsePublic(){
+export default function BrowsePublic() {
   const [habits, setHabits] = useState([]);
   const [q, setQ] = useState('');
   const [cats, setCats] = useState([]);
-
-  useEffect(()=> { fetch(); }, []);
 
   const fetch = async () => {
     const params = {};
@@ -17,17 +16,18 @@ export default function BrowsePublic(){
     setHabits(res.data.habits || res.data || []);
   };
 
-  useEffect(()=> { fetch(); }, [q, cats]);
+  useEffect(() => { fetch(); }, []); // fetch once
+  useEffect(() => { fetch(); }, [q, cats]); // refetch on filters
 
-  const toggle = (cat) => setCats(prev => prev.includes(cat) ? prev.filter(c=>c!==cat) : [...prev,cat]);
+  const toggle = (cat) => setCats(prev => prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]);
 
   return (
     <div>
       <h2 className="text-2xl mb-4">Browse Public Habits</h2>
-      <input className="input mb-3" placeholder="Search..." value={q} onChange={e=>setQ(e.target.value)} />
+      <input className="input mb-3" placeholder="Search..." value={q} onChange={e => setQ(e.target.value)} />
       <div className="flex gap-2 mb-4">
         {['Morning','Work','Fitness','Evening','Study'].map(c=> (
-          <button key={c} onClick={()=>toggle(c)} className="btn">{c}</button>
+          <button key={c} onClick={()=>toggle(c)} className={`btn ${cats.includes(c) ? 'bg-primary text-white' : ''}`}>{c}</button>
         ))}
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
