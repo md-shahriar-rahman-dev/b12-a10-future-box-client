@@ -3,7 +3,7 @@
 A Habit Tracker single-page app built with React, Firebase Auth, Tailwind and an Express backend.
 
 ## Live site
-https://inspiring-cupcake-f70e74.netlify.app/
+https://wondrous-malabi-72cbd5.netlify.app/
 
 ## Features
 - Email / Password and Google Authentication (Firebase)
