@@ -5,7 +5,6 @@ import Swal from 'sweetalert2';
 import { useAuth } from '../context/AuthContext';
 import Spinner from '../components/Spinner';
 
-
 export default function HabitDetails() {
   const { id } = useParams();
   const [habit, setHabit] = useState(null);
@@ -45,39 +44,43 @@ export default function HabitDetails() {
 
   return (
     <div className="max-w-3xl mx-auto p-6">
-      <img
-        src={habit.imageUrl || 'https://via.placeholder.com/800x350'}
-        alt={habit.title}
-        className="w-full h-64 object-cover rounded"
-      />
-      <h1 className="text-3xl mt-4">{habit.title}</h1>
-      <p className="text-sm text-gray-500">By {habit.userName || habit.userEmail}</p>
-      <p className="mt-4">{habit.description}</p>
+      <div className="bg-white/80 backdrop-blur-md shadow-xl rounded-xl overflow-hidden border border-yellow-200">
+        <img
+          src={habit.imageUrl || 'https://via.placeholder.com/800x350'}
+          alt={habit.title}
+          className="w-full h-64 object-cover"
+        />
+        <div className="p-6 space-y-4">
+          <h1 className="text-3xl font-bold">{habit.title}</h1>
+          <p className="text-sm text-gray-500">By {habit.userName || habit.userEmail}</p>
+          <p className="text-gray-700">{habit.description}</p>
 
-      <div className="mt-6">
-        <p className="mb-2 font-semibold text-gray-700">
-          🔥 Current Streak: <span className="text-green-600">{habit.currentStreak || 0}</span>
-        </p>
-        <div className="mb-2">Progress (last 30 days):</div>
-        <div className="w-full bg-gray-200 rounded h-4">
-          <div className="bg-green-500 h-4 rounded" style={{ width: `${progressPercent}%` }} />
+          <div className="mt-4 space-y-2">
+            <p className="font-semibold text-gray-700">
+              🔥 Current Streak: <span className="text-green-600">{habit.currentStreak || 0}</span>
+            </p>
+            <p className="font-semibold text-gray-700">Progress (last 30 days):</p>
+            <div className="w-full bg-gray-200 rounded h-4 overflow-hidden">
+              <div className="bg-green-500 h-4 rounded" style={{ width: `${progressPercent}%` }} />
+            </div>
+          </div>
+
+          <div className="mt-4 flex gap-3">
+            {user && (
+              <button
+                onClick={markComplete}
+                className="btn bg-green-500 text-white hover:bg-green-600"
+              >
+                Mark Complete
+              </button>
+            )}
+            {habit.userId === (user?.uid || user?.email) && (
+              <Link to={`/update/${id}`} className="btn btn-secondary">
+                Update Habit
+              </Link>
+            )}
+          </div>
         </div>
-      </div>
-
-      <div className="mt-6 flex gap-3">
-        {user && (
-          <button
-            onClick={markComplete}
-            className="btn bg-green-500 text-white hover:bg-green-600"
-          >
-            Mark Complete
-          </button>
-        )}
-        {habit.userId === (user?.uid || user?.email) && (
-          <Link to={`/update/${id}`} className="btn btn-secondary">
-            Update Habit
-          </Link>
-        )}
       </div>
     </div>
   );

@@ -42,34 +42,36 @@ export default function MyHabits() {
   if (loading) return <div className="p-6"><Spinner size={6} /></div>;
 
   return (
-    <div>
-      <h2 className="text-2xl mb-4">My Habits</h2>
-      <table className="w-full table-auto">
-        <thead>
-          <tr>
-            <th className="text-left p-2">Title</th>
-            <th className="p-2">Category</th>
-            <th className="p-2">Streak</th>
-            <th className="p-2">Created</th>
-            <th className="p-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {habits.map(h => (
-            <tr key={h._id} className="border-t">
-              <td className="p-2">{h.title}</td>
-              <td className="p-2">{h.category}</td>
-              <td className="p-2">{h.currentStreak || 0}</td>
-              <td className="p-2">{new Date(h.createdAt).toLocaleDateString()}</td>
-              <td className="p-2">
-                <Link to={`/update/${h._id}`} className="btn btn-sm mr-2">Update</Link>
-                <button onClick={() => remove(h._id)} className="btn btn-sm mr-2">Delete</button>
-                <button onClick={() => mark(h._id)} className="btn btn-sm btn-primary">Mark Complete</button>
-              </td>
+    <div className="max-w-4xl mx-auto px-6 py-8 bg-white/30 backdrop-blur-md rounded-lg shadow-lg">
+      <h2 className="text-2xl font-bold mb-6 text-center">My Habits</h2>
+      <div className="overflow-x-auto">
+        <table className="w-full table-auto border-collapse border border-gray-300">
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="text-left p-2 border-b border-gray-300">Title</th>
+              <th className="p-2 border-b border-gray-300">Category</th>
+              <th className="p-2 border-b border-gray-300">Streak</th>
+              <th className="p-2 border-b border-gray-300">Created</th>
+              <th className="p-2 border-b border-gray-300">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {habits.map(h => (
+              <tr key={h._id} className="border-t border-gray-300">
+                <td className="p-2">{h.title}</td>
+                <td className="p-2">{h.category}</td>
+                <td className="p-2">{h.currentStreak || 0}</td>
+                <td className="p-2">{new Date(h.createdAt).toLocaleDateString()}</td>
+                <td className="p-2 flex flex-wrap gap-2">
+                  <Link to={`/update/${h._id}`} className="btn btn-sm">Update</Link>
+                  <button onClick={() => remove(h._id)} className="btn btn-sm">Delete</button>
+                  <button onClick={() => mark(h._id)} className="btn btn-sm btn-primary">Mark Complete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

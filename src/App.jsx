@@ -12,7 +12,7 @@ import Home from './pages/Home';
 import ProtectedRoute from './components/ProtectedRoute';
 import AddHabit from './pages/AddHabit';
 import BrowsePublic from './pages/BrowsePublic';
-
+import UpdateHabit from './pages/UpdateHabit';
 
 export default function App(){
   return (
@@ -27,6 +27,7 @@ export default function App(){
           <Route path="/my-habits" element={<ProtectedRoute><MyHabits/></ProtectedRoute>} />
           <Route path="/browse" element={<BrowsePublic/>} />
           <Route path="/habits/:id" element={<HabitDetails/>} />
+          <Route path="/update/:id" element={<ProtectedRoute><UpdateHabit/></ProtectedRoute>} />
           <Route path="*" element={<NotFound/>} />
         </Routes>
       </main>
