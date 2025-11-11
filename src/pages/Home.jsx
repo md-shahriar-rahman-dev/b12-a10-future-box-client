@@ -124,34 +124,75 @@ export default function Home() {
 
 
       {/* Why Build Habits */}
-      <section className="bg-white/40 backdrop-blur-md p-6 rounded-lg shadow-lg">
-        <h2 className="text-3xl font-bold mb-6">Why Build Habits?</h2>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {benefits.map((b,i) => (
-            <motion.div key={i} className="card p-4 shadow rounded-lg text-center"
-              initial={{opacity:0, y:20}} animate={{opacity:1, y:0}} transition={{delay:i*0.2}}>
-              {b.icon}
-              <h3 className="text-xl font-bold">{b.title}</h3>
-              <p className="text-gray-600">{b.desc}</p>
-            </motion.div>
-          ))}
+<section className="bg-white/40 backdrop-blur-md p-6 rounded-lg shadow-lg">
+  <h2 className="text-3xl font-bold mb-6 text-center">Why Build Habits?</h2>
+  <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+    {benefits.map((b, i) => (
+      <motion.div
+        key={i}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: i * 0.2 }}
+        whileHover={{ scale: 1.05, y: -4 }}
+        className="group relative p-5 bg-white rounded-xl shadow-md 
+                   hover:shadow-xl transition-all duration-300 
+                   cursor-pointer overflow-hidden"
+      >
+        <div className="text-4xl mb-3 text-yellow-500 group-hover:scale-110 transition-transform duration-300">
+          {b.icon}
         </div>
-      </section>
+        <h3 className="text-xl font-bold text-gray-800 group-hover:text-yellow-600 transition-colors">
+          {b.title}
+        </h3>
+        <p className="text-gray-600 mt-1">{b.desc}</p>
 
-      {/* Tips / Extra Sections */}
-      <section className="bg-white/40 backdrop-blur-md p-6 rounded-lg shadow-lg">
-        <h2 className="text-3xl font-bold mb-6">Tips</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <motion.div className="card p-4 shadow rounded-lg" initial={{opacity:0, y:20}} animate={{opacity:1, y:0}}>
-            <h3 className="font-bold mb-2">Use reminders</h3>
-            <p>Set notifications to stay on track daily.</p>
-          </motion.div>
-          <motion.div className="card p-4 shadow rounded-lg" initial={{opacity:0, y:20}} animate={{opacity:1, y:0}} transition={{delay:0.2}}>
-            <h3 className="font-bold mb-2">Start small</h3>
-            <p>Begin with manageable habits and scale gradually.</p>
-          </motion.div>
+        {/* Glow overlay */}
+        <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-yellow-100/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+      </motion.div>
+    ))}
+  </div>
+</section>
+
+
+      <section className="bg-white/40 backdrop-blur-md p-8 rounded-xl shadow-lg">
+  <h2 className="text-3xl font-bold mb-2 text-center">Tips</h2>
+  <p className="text-gray-600 text-center mb-8">Practical advice to help you stay consistent and motivated.</p>
+
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {[
+      {
+        title: "Use Reminders",
+        text: "Set gentle notifications to keep your habits on track daily.",
+        icon: "⏰"
+      },
+      {
+        title: "Start Small",
+        text: "Begin with easy goals, build consistency, and expand over time.",
+        icon: "🌱"
+      }
+    ].map((tip, i) => (
+      <motion.div
+        key={i}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: i * 0.2 }}
+        whileHover={{ scale: 1.05, y: -3 }}
+        className="group p-5 bg-white rounded-xl shadow-md hover:shadow-xl 
+                   transition-all duration-300 cursor-pointer border border-transparent 
+                   hover:border-yellow-400"
+      >
+        <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300">
+          {tip.icon}
         </div>
-      </section>
+        <h3 className="font-bold mb-2 text-gray-800 group-hover:text-yellow-600 transition-colors">
+          {tip.title}
+        </h3>
+        <p className="text-gray-600">{tip.text}</p>
+      </motion.div>
+    ))}
+  </div>
+</section>
+
 
       {/* Contact Us Section */}
       <section className="bg-white/70 backdrop-blur-md rounded-lg p-8 max-w-3xl mx-auto text-center mt-16 shadow-lg">

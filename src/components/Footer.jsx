@@ -30,7 +30,7 @@ export default function Footer() {
           <h4 className="text-lg font-bold text-white mb-2">Contact</h4>
           <p className="text-gray-200 text-sm mb-1">Email: <a href="mailto:sahriarrrahman701@gmail.com" className="hover:underline">sahriarrahman701@gmail.com</a></p>
           <p className="text-gray-200 text-sm mb-1">Phone: <a href="tel:+8801518944542" className="hover:underline">+8801518944542</a></p>
-          <p className="text-gray-200 text-sm">Address: 123 Habit Street, Productivity City</p>
+          <p className="text-gray-200 text-sm">Address: 87 Ashkona Street, Dhaka City</p>
         </div>
 
         {/* Socials */}
@@ -54,7 +54,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom Bar */}
-      <div className="relative z-10 mt-10 border-t border-white/30 pt-4 text-center text-gray-100 text-sm">
+      <div className="relative z-10 mt-5 border-t border-white/30 pt-4 text-center text-gray-100 text-sm">
         © {new Date().getFullYear()} <span className="font-semibold">HabitHub</span> — All Rights Reserved.
       </div>
     </footer>

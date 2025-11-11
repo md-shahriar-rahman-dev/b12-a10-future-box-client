@@ -1,5 +1,5 @@
 import React from 'react';
-import loadingGif from '../assets/walk.gif';
+import loadingGif from '../assets/load-30.gif';
 
 export default function Spinner({ size = 200 }) { 
   return (

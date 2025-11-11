@@ -23,7 +23,7 @@ export default function BrowsePublic() {
 
   return (
     <div>
-      <h2 className="text-2xl mb-4">Browse Public Habits</h2>
+      <h2 className="text-3xl  mb-4">Browse Public Habits</h2>
       <input className="input mb-3" placeholder="Search..." value={q} onChange={e => setQ(e.target.value)} />
       <div className="flex gap-2 mb-4">
         {['Morning','Work','Fitness','Evening','Study'].map(c=> (
