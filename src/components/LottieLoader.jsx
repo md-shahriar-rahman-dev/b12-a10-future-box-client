@@ -1,6 +1,6 @@
 import React from 'react';
 import Lottie from 'lottie-react';
-import loadingAnimation from '../assets/loading.lottie'; // adjust path
+import loadingAnimation from '../assets/loading.lottie'; 
 
 export default function LottieLoader({ width = 150, height = 150 }) {
   return (

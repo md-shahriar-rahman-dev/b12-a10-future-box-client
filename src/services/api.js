@@ -1,26 +1,27 @@
-// src/services/api.js
 import axios from 'axios';
 import { getAuth } from 'firebase/auth';
 
-const baseURL = import.meta.env.VITE_API_BASE_URL;
-
+// Use your deployed backend URL
 const api = axios.create({
-  baseURL,
+  baseURL: 'https://future-box-api-server.vercel.app/api', // ✅ deployed server
   headers: { 'Content-Type': 'application/json' }
 });
 
-api.interceptors.request.use(async (config) => {
-  try {
-    const auth = getAuth();
-    const user = auth.currentUser;
-    if (user) {
-      const token = await user.getIdToken();
-      config.headers.Authorization = `Bearer ${token}`;
+api.interceptors.request.use(
+  async (config) => {
+    try {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      if (user) {
+        const token = await user.getIdToken();
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    } catch (err) {
+      console.warn('Could not attach token:', err?.message || err);
     }
-  } catch (err) {
-    console.warn('Could not attach token:', err?.message || err);
-  }
-  return config;
-}, (err) => Promise.reject(err));
+    return config;
+  },
+  (err) => Promise.reject(err)
+);
 
 export default api;
