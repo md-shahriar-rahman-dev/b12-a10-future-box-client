@@ -4,6 +4,15 @@ import api from '../services/api';
 import Swal from 'sweetalert2';
 import { useAuth } from '../context/AuthContext';
 import Spinner from '../components/Spinner';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from 'recharts';
 
 export default function HabitDetails() {
   const { id } = useParams();
@@ -32,8 +41,9 @@ export default function HabitDetails() {
   };
 
   if (loading) return <div className="p-6"><Spinner size={6} /></div>;
-  if (!habit) return <div className="p-6">Loading...</div>;
+  if (!habit) return <div className="p-6">Habit not found.</div>;
 
+  // Calculate progress for last 30 days
   const progressPercent = (() => {
     const last30 = (habit.completionHistory || []).filter(d => {
       const dt = new Date(d);
@@ -42,8 +52,20 @@ export default function HabitDetails() {
     return Math.round((last30 / 30) * 100);
   })();
 
+  // Prepare data for chart (last 7 days)
+  const chartData = Array.from({ length: 7 }).map((_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() - (6 - i));
+    const formatted = d.toISOString().split('T')[0];
+    return {
+      date: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+      completed: habit.completionHistory?.includes(formatted) ? 1 : 0,
+    };
+  });
+
   return (
-    <div className="max-w-3xl mx-auto p-6">
+    <div className="max-w-3xl mx-auto p-6 space-y-6">
+      {/* Habit Card */}
       <div className="bg-white/80 backdrop-blur-md shadow-xl rounded-xl overflow-hidden border border-yellow-200">
         <img
           src={habit.imageUrl || 'https://via.placeholder.com/800x350'}
@@ -55,6 +77,7 @@ export default function HabitDetails() {
           <p className="text-sm text-gray-500">By {habit.userName || habit.userEmail}</p>
           <p className="text-gray-700">{habit.description}</p>
 
+          {/* Streak & Progress */}
           <div className="mt-4 space-y-2">
             <p className="font-semibold text-gray-700">
               🔥 Current Streak: <span className="text-green-600">{habit.currentStreak || 0}</span>
@@ -65,6 +88,21 @@ export default function HabitDetails() {
             </div>
           </div>
 
+          {/* Recharts Line Chart */}
+          <div className="mt-6">
+            <h3 className="text-xl font-bold mb-2 text-center">Last 7 Days Completion</h3>
+            <ResponsiveContainer width="100%" height={200}>
+              <LineChart data={chartData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" />
+                <YAxis />
+                <Tooltip />
+                <Line type="monotone" dataKey="completed" stroke="#f59e0b" strokeWidth={3} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Actions */}
           <div className="mt-4 flex gap-3">
             {user && (
               <button

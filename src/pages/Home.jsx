@@ -9,13 +9,22 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 import Swal from 'sweetalert2';
-
+import {
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip
+} from 'recharts';
 
 export default function Home() {
   const [featured, setFeatured] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     api.get('/habits/latest')
       .then(res => setFeatured(res.data.habits || res.data || []))
       .catch(() => {})
@@ -40,59 +49,73 @@ export default function Home() {
     { icon: <FaSmile className="text-5xl text-primary mx-auto mb-2"/>, title: "Reduced Stress", desc: "Structured habits reduce anxiety." },
   ];
 
+  // Prepare Recharts data (habit completion %)
+  const chartData = featured.map(h => {
+    const last30 = (h.completionHistory || []).filter(d => {
+      const dt = new Date(d);
+      return (Date.now() - dt.getTime()) <= 1000 * 60 * 60 * 24 * 30;
+    }).length;
+    const progress = Math.round((last30 / 30) * 100);
+    return { name: h.title, progress };
+  });
+
   return (
-    
     <div className="space-y-12">
 
       {/* Hero Slider */}
       <motion.section initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} transition={{duration:0.6}}>
         <Slider {...sliderSettings}>
-          <div className="relative">
-            <img src="https://picsum.photos/1200/400?random=1" alt="Slide 1" className="w-full h-96 object-cover"/>
-            <div className="absolute top-1/3 left-1/4 text-white">
-              <h1 className="text-4xl font-bold mb-2">Build better habits daily</h1>
-              <p className="mb-4">Track progress, maintain streaks, and grow consistently with HabitHub.</p>
-              <button className="btn btn-primary">Get Started</button>
+          {[1,2,3].map(i => (
+            <div key={i} className="relative">
+              <img src={`https://picsum.photos/1200/400?random=${i}`} alt={`Slide ${i}`} className="w-full h-96 object-cover"/>
+              <div className="absolute top-1/3 left-1/4 text-white">
+                <h1 className="text-4xl font-bold mb-2">{i === 1 ? 'Build better habits daily' : i === 2 ? 'Stay Consistent' : 'Track Progress'}</h1>
+                <p className="mb-4">{i === 1 ? 'Track progress, maintain streaks, and grow consistently with HabitHub.' : i === 2 ? 'Small daily habits lead to long-term growth.' : 'Monitor your streaks and achievements easily.'}</p>
+                <button className="btn btn-primary">{i === 1 ? 'Get Started' : i === 2 ? 'Explore Habits' : 'Start Now'}</button>
+              </div>
             </div>
-          </div>
-          <div className="relative">
-            <img src="https://picsum.photos/1200/400?random=2" alt="Slide 2" className="w-full h-96 object-cover"/>
-            <div className="absolute top-1/3 left-1/4 text-white">
-              <h1 className="text-4xl font-bold mb-2">Stay Consistent</h1>
-              <p className="mb-4">Small daily habits lead to long-term growth.</p>
-              <button className="btn btn-primary">Explore Habits</button>
-            </div>
-          </div>
-          <div className="relative">
-            <img src="https://picsum.photos/1200/400?random=3" alt="Slide 3" className="w-full h-96 object-cover"/>
-            <div className="absolute top-1/3 left-1/4 text-white">
-              <h1 className="text-4xl font-bold mb-2">Track Progress</h1>
-              <p className="mb-4">Monitor your streaks and achievements easily.</p>
-              <button className="btn btn-primary">Start Now</button>
-            </div>
-          </div>
+          ))}
         </Slider>
       </motion.section>
 
-
       <FeaturedCarousel slides={[
-  { title: "Morning Routine", text: "Start your day with productive habits." },
-  { title: "Fitness Goals", text: "Track workouts and build consistency." },
-  { title: "Study Plan", text: "Maintain streaks on your learning journey." },
-]} />
+        { title: "Morning Routine", text: "Start your day with productive habits." },
+        { title: "Fitness Goals", text: "Track workouts and build consistency." },
+        { title: "Study Plan", text: "Maintain streaks on your learning journey." },
+      ]} />
 
       {/* Featured Habits */}
       <section>
         <h2 className="text-3xl font-bold mb-6">Featured Habits</h2>
         {loading ? <Spinner size={12} /> : (
-  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-    {featured.map(h => <HabitCard key={h._id || h.id} habit={h} />)}
-  </div>
-)}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {featured.map(h => <HabitCard key={h._id || h.id} habit={h} />)}
+          </div>
+        )}
       </section>
 
+      {/* Habits Progress Chart */}
+{featured.length > 0 && (
+  <section className="max-w-5xl mx-auto p-6 bg-white/30 backdrop-blur-lg rounded-2xl shadow-xl">
+  <h2 className="text-3xl font-bold mb-6 text-center">Your Habits Progress</h2>
+  <ResponsiveContainer width="100%" height={300}>
+    <BarChart data={chartData}>
+      <CartesianGrid stroke="#fff" strokeDasharray="3 3" />
+      <XAxis dataKey="name" stroke="#fff" />
+      <YAxis stroke="#fff" unit="%" />
+      <Tooltip contentStyle={{ backgroundColor: 'rgba(255,255,255,0.8)', borderRadius: '8px' }} />
+      <Bar dataKey="progress" fill="#f59e0b" />
+    </BarChart>
+  </ResponsiveContainer>
+</section>
+
+
+
+)}
+
+
       {/* Why Build Habits */}
-      <section>
+      <section className="bg-white/40 backdrop-blur-md p-6 rounded-lg shadow-lg">
         <h2 className="text-3xl font-bold mb-6">Why Build Habits?</h2>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {benefits.map((b,i) => (
@@ -107,7 +130,7 @@ export default function Home() {
       </section>
 
       {/* Tips / Extra Sections */}
-      <section>
+      <section className="bg-white/40 backdrop-blur-md p-6 rounded-lg shadow-lg">
         <h2 className="text-3xl font-bold mb-6">Tips</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <motion.div className="card p-4 shadow rounded-lg" initial={{opacity:0, y:20}} animate={{opacity:1, y:0}}>
@@ -121,45 +144,43 @@ export default function Home() {
         </div>
       </section>
 
-{/* Contact Us Section */}
-<section className="bg-white/70 backdrop-blur-md rounded-lg p-8 max-w-3xl mx-auto text-center mt-16 shadow-lg">
-  <h2 className="text-3xl font-bold mb-4">Contact Us</h2>
-  <p className="mb-4 text-gray-700">Subscribe for updates or send us your email to get in touch!</p>
-  <form 
-    onSubmit={(e) => {
-      e.preventDefault();
-      const email = e.target.email.value;
-      if(!email) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Please enter your email!',
-        });
-        return;
-      }
-      // You can replace this with actual API call later
-      Swal.fire({
-        icon: 'success',
-        title: 'Thank you!',
-        text: `We received: ${email}`,
-        showConfirmButton: false,
-        timer: 2000
-      });
-      e.target.reset();
-    }}
-    className="flex flex-col md:flex-row justify-center gap-3"
-  >
-    <input 
-      type="email" 
-      name="email" 
-      placeholder="Enter your email" 
-      className="input flex-1 p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-      required
-    />
-    <button type="submit" className="btn btn-primary px-6 py-3 mt-3 md:mt-0">Submit</button>
-  </form>
-</section>
-
+      {/* Contact Us Section */}
+      <section className="bg-white/70 backdrop-blur-md rounded-lg p-8 max-w-3xl mx-auto text-center mt-16 shadow-lg">
+        <h2 className="text-3xl font-bold mb-4">Contact Us</h2>
+        <p className="mb-4 text-gray-700">Subscribe for updates or send us your email to get in touch!</p>
+        <form 
+          onSubmit={(e) => {
+            e.preventDefault();
+            const email = e.target.email.value;
+            if(!email) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Please enter your email!',
+              });
+              return;
+            }
+            Swal.fire({
+              icon: 'success',
+              title: 'Thank you!',
+              text: `We received: ${email}`,
+              showConfirmButton: false,
+              timer: 2000
+            });
+            e.target.reset();
+          }}
+          className="flex flex-col md:flex-row justify-center gap-3"
+        >
+          <input 
+            type="email" 
+            name="email" 
+            placeholder="Enter your email" 
+            className="input flex-1 p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            required
+          />
+          <button type="submit" className="btn btn-primary px-6 py-3 mt-3 md:mt-0">Submit</button>
+        </form>
+      </section>
 
     </div>
   );
