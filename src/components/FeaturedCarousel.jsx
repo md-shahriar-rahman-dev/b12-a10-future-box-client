@@ -17,7 +17,7 @@ export default function FeaturedCarousel({ slides = [] }) {
         stretch: 0,
         depth: 200,
         modifier: 1,
-        slideShadows: false,
+        slideShadows: true,
       }}
       autoplay={{ delay: 2500 }}
       pagination={{ clickable: true }}
@@ -26,9 +26,12 @@ export default function FeaturedCarousel({ slides = [] }) {
     >
       {(slides.length === 0 ? [{ title: "Build daily habits", text: "Track, mark complete, and grow streaks." }] : slides)
         .map((s, i) => (
-          <SwiperSlide key={i} className="w-72 bg-white rounded-lg shadow p-6">
+          <SwiperSlide
+            key={i}
+            className="w-72 bg-gray-900/80 text-white rounded-2xl shadow-2xl p-6 backdrop-blur-md hover:scale-105 transition-transform duration-300"
+          >
             <h3 className="text-xl font-bold">{s.title}</h3>
-            <p className="mt-2 text-gray-600">{s.text}</p>
+            <p className="mt-2 text-gray-300">{s.text}</p>
           </SwiperSlide>
         ))}
     </Swiper>

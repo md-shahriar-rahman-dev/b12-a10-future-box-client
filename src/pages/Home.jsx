@@ -63,29 +63,38 @@ export default function Home() {
     <div className="space-y-12">
 
       {/* Hero Slider */}
-      <motion.section initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} transition={{duration:0.6}}>
-        <Slider {...sliderSettings}>
-          {[1,2,3].map(i => (
-            <div key={i} className="relative">
-              <img src={`https://picsum.photos/1200/400?random=${i}`} alt={`Slide ${i}`} className="w-full h-96 object-cover"/>
-              <div className="absolute top-1/3 left-1/4 text-white">
-                <h1 className="text-4xl font-bold mb-2">{i === 1 ? 'Build better habits daily' : i === 2 ? 'Stay Consistent' : 'Track Progress'}</h1>
-                <p className="mb-4">{i === 1 ? 'Track progress, maintain streaks, and grow consistently with HabitHub.' : i === 2 ? 'Small daily habits lead to long-term growth.' : 'Monitor your streaks and achievements easily.'}</p>
-                <button className="btn btn-primary">{i === 1 ? 'Get Started' : i === 2 ? 'Explore Habits' : 'Start Now'}</button>
-              </div>
-            </div>
-          ))}
-        </Slider>
-      </motion.section>
+<motion.section initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} transition={{duration:0.6}}>
+  <Slider {...sliderSettings}>
+    {[1,2,3].map(i => (
+      <div key={i} className="relative rounded-2xl overflow-hidden shadow-xl">
+        <img
+          src={`https://picsum.photos/1200/400?random=${i}`}
+          alt={`Slide ${i}`}
+          className="w-full h-96 object-cover brightness-75"
+        />
+        <div className="absolute inset-0 flex flex-col justify-center items-start px-8 md:px-16 text-white">
+          <h1 className="text-4xl md:text-5xl font-extrabold mb-2 drop-shadow-lg">
+            {i === 1 ? 'Build better habits daily' : i === 2 ? 'Stay Consistent' : 'Track Progress'}
+          </h1>
+          <p className="mb-4 text-lg md:text-xl drop-shadow-md">
+            {i === 1 
+              ? 'Track progress, maintain streaks, and grow consistently with HabitHub.' 
+              : i === 2 
+              ? 'Small daily habits lead to long-term growth.' 
+              : 'Monitor your streaks and achievements easily.'}
+          </p>
+          <button className="btn btn-primary rounded-full px-6 py-3 drop-shadow-md">
+            {i === 1 ? 'Get Started' : i === 2 ? 'Explore Habits' : 'Start Now'}
+          </button>
+        </div>
+      </div>
+    ))}
+  </Slider>
+</motion.section>
 
-      <FeaturedCarousel slides={[
-        { title: "Morning Routine", text: "Start your day with productive habits." },
-        { title: "Fitness Goals", text: "Track workouts and build consistency." },
-        { title: "Study Plan", text: "Maintain streaks on your learning journey." },
-      ]} />
 
       {/* Featured Habits */}
-      <section>
+      <section className="bg-white/40 backdrop-blur-md p-6 rounded-lg shadow-lg">
         <h2 className="text-3xl font-bold mb-6">Featured Habits</h2>
         {loading ? <Spinner size={12} /> : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
