@@ -15,15 +15,27 @@ export default function UpdateHabit(){
   if(!form) return <div className="p-6">Loading...</div>;
 
   const submit = async (e) => {
-    e.preventDefault();
-    try {
-      await api.patch(`/habits/${id}`, form);
-      Swal.fire('Updated','Habit updated','success');
-      navigate(`/habits/${id}`);
-    } catch (err) {
-      Swal.fire('Error', err.response?.data?.message || err.message, 'error');
-    }
-  };
+  e.preventDefault();
+  try {
+    // Create a copy of the form excluding _id
+    const { _id, ...updatedData } = form;
+    await api.patch(`/habits/${id}`, updatedData);
+    Swal.fire({
+      icon: 'success',
+      title: 'Updated',
+      text: 'Habit updated successfully',
+      showConfirmButton: false,
+      timer: 2000
+    });
+    navigate(`/habits/${id}`);
+  } catch (err) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: err.response?.data?.message || err.message
+    });
+  }
+};
 
   return (
     <div className="max-w-md mx-auto p-6">
