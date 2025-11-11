@@ -23,31 +23,69 @@ export default function AddHabit(){
         userName: user.displayName || ''
       };
       await api.post('/habits', body);
-      Swal.fire('Success', 'Habit added', 'success');
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'Habit added successfully',
+        showConfirmButton: false,
+        timer: 2000
+      });
       navigate('/my-habits');
     } catch (err) {
-      Swal.fire('Error', err.response?.data?.message || err.message, 'error');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: err.response?.data?.message || err.message
+      });
     }
   };
 
   return (
-    <div className="max-w-md mx-auto p-6">
-      <h2 className="text-2xl mb-4">Add Habit</h2>
-      <form onSubmit={submit} className="space-y-3">
-        <input className="input" placeholder="Title" value={title} onChange={e=>setTitle(e.target.value)} required />
-        <textarea className="input" placeholder="Description" value={description} onChange={e=>setDescription(e.target.value)} required />
-        <select className="input" value={category} onChange={e=>setCategory(e.target.value)}>
-          <option>Morning</option>
-          <option>Work</option>
-          <option>Fitness</option>
-          <option>Evening</option>
-          <option>Study</option>
-        </select>
-        <input className="input" type="time" value={reminderTime} onChange={e=>setReminderTime(e.target.value)} />
-        <input className="input" placeholder="Image URL (optional)" value={imageUrl} onChange={e=>setImageUrl(e.target.value)} />
-        <div className="text-sm text-gray-600">Logged in as: {user?.email}</div>
-        <button className="btn btn-primary w-full">Add</button>
-      </form>
+    <div className="flex justify-center items-start min-h-[80vh] py-12">
+      <div className="bg-white/70 backdrop-blur-md rounded-lg p-8 max-w-md w-full shadow-lg">
+        <h2 className="text-2xl font-bold mb-4 text-center">Add Habit</h2>
+        <form onSubmit={submit} className="space-y-4">
+          <input
+            className="input w-full"
+            placeholder="Title"
+            value={title}
+            onChange={e=>setTitle(e.target.value)}
+            required
+          />
+          <textarea
+            className="input w-full"
+            placeholder="Description"
+            value={description}
+            onChange={e=>setDescription(e.target.value)}
+            required
+          />
+          <select
+            className="input w-full"
+            value={category}
+            onChange={e=>setCategory(e.target.value)}
+          >
+            <option>Morning</option>
+            <option>Work</option>
+            <option>Fitness</option>
+            <option>Evening</option>
+            <option>Study</option>
+          </select>
+          <input
+            className="input w-full"
+            type="time"
+            value={reminderTime}
+            onChange={e=>setReminderTime(e.target.value)}
+          />
+          <input
+            className="input w-full"
+            placeholder="Image URL (optional)"
+            value={imageUrl}
+            onChange={e=>setImageUrl(e.target.value)}
+          />
+          <div className="text-sm text-gray-600">Logged in as: {user?.email}</div>
+          <button className="btn btn-primary w-full py-3">Add</button>
+        </form>
+      </div>
     </div>
   );
 }

@@ -8,6 +8,7 @@ import FeaturedCarousel from '../components/FeaturedCarousel';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
+import Swal from 'sweetalert2';
 
 
 export default function Home() {
@@ -119,6 +120,46 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+{/* Contact Us Section */}
+<section className="bg-white/70 backdrop-blur-md rounded-lg p-8 max-w-3xl mx-auto text-center mt-16 shadow-lg">
+  <h2 className="text-3xl font-bold mb-4">Contact Us</h2>
+  <p className="mb-4 text-gray-700">Subscribe for updates or send us your email to get in touch!</p>
+  <form 
+    onSubmit={(e) => {
+      e.preventDefault();
+      const email = e.target.email.value;
+      if(!email) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Please enter your email!',
+        });
+        return;
+      }
+      // You can replace this with actual API call later
+      Swal.fire({
+        icon: 'success',
+        title: 'Thank you!',
+        text: `We received: ${email}`,
+        showConfirmButton: false,
+        timer: 2000
+      });
+      e.target.reset();
+    }}
+    className="flex flex-col md:flex-row justify-center gap-3"
+  >
+    <input 
+      type="email" 
+      name="email" 
+      placeholder="Enter your email" 
+      className="input flex-1 p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+      required
+    />
+    <button type="submit" className="btn btn-primary px-6 py-3 mt-3 md:mt-0">Submit</button>
+  </form>
+</section>
+
 
     </div>
   );
