@@ -18,10 +18,3 @@ A Habit Tracker single-page app built with React, Firebase Auth, Tailwind and an
 2. `npm install`
 3. `npm run dev`
 
-## Repo & commits
-- Client: aim for **≥15 notable commits** (split by features: auth, pages, API, styling, deployment)
-- Server: aim for **≥8 notable commits**
-
-## Notes
-- Add your client domain to Firebase authorized domains before deploying.
-- For private routes, the client sends Firebase ID token in `Authorization` header.
