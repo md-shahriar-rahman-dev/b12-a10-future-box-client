@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { getAuth } from 'firebase/auth';
 
-// Use your deployed backend URL
+
 const api = axios.create({
-  baseURL: 'https://future-box-api-server.vercel.app/api', // ✅ deployed server
+  baseURL: 'https://future-box-server-lake.vercel.app/api', 
   headers: { 'Content-Type': 'application/json' }
 });
 
