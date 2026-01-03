@@ -3,12 +3,12 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID
+  apiKey: "AIzaSyBVDbdIvo_4ryDvjunaI-wgpQYV7meGAss",
+  authDomain: "future-box-api-client.firebaseapp.com",
+  projectId: "future-box-api-client",
+  storageBucket: "future-box-api-client.firebasestorage.app",
+  messagingSenderId: "321657359999",
+  appId: "1:321657359999:web:dd9279cfc69dd3da58f94a"
 };
 
 const app = initializeApp(firebaseConfig);
