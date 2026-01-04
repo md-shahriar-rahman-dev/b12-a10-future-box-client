@@ -14,17 +14,26 @@ import { toast } from 'react-toastify';
 
 const AuthContext = createContext();
 
+// Admin credentials
+const ADMIN_EMAIL = 'admin@habit.io';
+const ADMIN_PASSWORD = 'admin@1122';
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(null); 
+
+  // Check if user is admin
+  const isAdmin = (userEmail) => {
+    return userEmail === ADMIN_EMAIL;
+  };
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (u) => {
       if (u) {
         await u.reload();
         const idToken = await getIdToken(u, true); 
-        setUser({ ...u });
+        setUser({ ...u, isAdmin: isAdmin(u.email) });
         setToken(idToken);
         localStorage.setItem('accessToken', idToken); 
       } else {
@@ -46,7 +55,8 @@ export const AuthProvider = ({ children }) => {
     await res.user.reload();
     const idToken = await getIdToken(res.user, true);
     setToken(idToken);
-    setUser({ ...res.user });
+    const userWithRole = { ...res.user, isAdmin: isAdmin(res.user.email) };
+    setUser(userWithRole);
     localStorage.setItem('accessToken', idToken);
     toast.success('Registered successfully');
     return res;
@@ -56,9 +66,10 @@ export const AuthProvider = ({ children }) => {
     const res = await signInWithEmailAndPassword(auth, email, password);
     const idToken = await getIdToken(res.user, true);
     setToken(idToken);
-    setUser(res.user);
+    const userWithRole = { ...res.user, isAdmin: isAdmin(res.user.email) };
+    setUser(userWithRole);
     localStorage.setItem('accessToken', idToken);
-    toast.success('Logged in successfully');
+    toast.success(userWithRole.isAdmin ? 'Admin logged in successfully' : 'Logged in successfully');
     return res;
   };
 
@@ -68,7 +79,8 @@ export const AuthProvider = ({ children }) => {
     await res.user.reload();
     const idToken = await getIdToken(res.user, true);
     setToken(idToken);
-    setUser(res.user);
+    const userWithRole = { ...res.user, isAdmin: isAdmin(res.user.email) };
+    setUser(userWithRole);
     localStorage.setItem('accessToken', idToken);
     toast.success('Logged in with Google');
     return res;
@@ -83,7 +95,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, loading, register, login, googleLogin, logout }}>
+    <AuthContext.Provider value={{ user, token, loading, register, login, googleLogin, logout, isAdmin }}>
       {children}
     </AuthContext.Provider>
   );

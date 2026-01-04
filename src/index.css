@@ -1,41 +1,169 @@
 @import "tailwindcss";
 
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@plugin "daisyui" {
-  themes: light --default;
- }
-@plugin "daisyui/theme" {
-  name: "light";
-  default: true;
-  --color-primary: #632EE3;
-  --color-secondary: teal;
+
+/* =====================
+   CSS VARIABLES
+===================== */
+:root {
+  --primary: #2563eb;   /* blue-600 */
+  --secondary: #f59e0b; /* amber-500 */
+  --muted: #6b7280;     /* gray-500 */
+  --bg-start: #eff6ff; /* blue-50 */
+  --bg-mid: #ffffff;
+  --bg-end: #fef3c7;   /* amber-100 */
 }
 
-:root {
-  --primary: #0ea5e9;
-  --muted: #64748b;
+html.dark {
+  --primary: #60a5fa;   /* blue-400 */
+  --secondary: #fbbf24; /* amber-400 */
+  --muted: #9ca3af;     /* gray-400 */
+  --bg-start: #020617;  /* slate-950 */
+  --bg-mid: #020617;
+  --bg-end: #020617;
 }
+
+/* =====================
+   GLOBAL BODY BACKGROUND
+===================== */
 body {
-  background: url('/public/background.jpg') no-repeat center center fixed;
-  background-size: cover;
-  
+  min-height: 100vh;
+  background:
+    linear-gradient(
+      rgba(12, 0, 0, 0.089),
+      rgba(231, 230, 230, 0.85)
+    ),
+    url("/background.jpg") center / cover no-repeat fixed;
+  color: rgb(17 24 39);
+  transition: background 0.4s ease, color 0.3s ease;
 }
+
+
+html.dark body {
+  background:
+    linear-gradient(
+      rgba(2, 6, 23, 0.85),
+      rgba(2, 6, 23, 0.85)
+    ),
+    url("/background.jpg") center / cover no-repeat fixed;
+  color: rgb(229 231 235);
+}
+
+
+/* =====================
+   MAIN WRAPPER
+===================== */
 .main-container {
-  background-color: rgba(255, 255, 255, 0.5); /* White with 50% opacity */
-  backdrop-filter: blur(5px); /* Optional: adds a blur effect behind */
   min-height: 100vh;
   padding: 2rem;
+  background: transparent;
 }
-/* small helpers */
-.container { max-width: 1100px; margin: 0 auto; padding: 1rem; }
-.btn { @apply inline-flex items-center justify-center px-4 py-2 rounded-md border; }
-.btn-primary { background: var(--primary); color: white; border: none; }
-.input { @apply border rounded-md p-2 w-full; }
+
+/* =====================
+   CONTAINER
+===================== */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* =====================
+   BUTTONS
+===================== */
+.btn {
+  @apply inline-flex items-center justify-center rounded-xl font-semibold transition-all duration-300;
+}
+
+.btn-primary {
+  background: linear-gradient(
+    to right,
+    var(--primary),
+    #3b82f6
+  );
+  color: white;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.3);
+}
+
+.btn-secondary {
+  background: linear-gradient(
+    to right,
+    var(--secondary),
+    #f97316
+  );
+  color: white;
+}
+
+.btn-secondary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(245, 158, 11, 0.3);
+}
+
+/* =====================
+   INPUTS
+===================== */
+.input {
+  @apply w-full rounded-xl px-4 py-3 text-base transition-all duration-300;
+  background-color: white;
+  border: 2px solid rgb(229 231 235);
+}
+
+html.dark .input {
+  background-color: rgb(31 41 55);
+  border-color: rgb(55 65 81);
+  color: rgb(243 244 246);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+}
+
+/* =====================
+   CARDS (IMPORTANT)
+===================== */
 .card {
-  background-color: rgba(255, 255, 255, 0.6); /* transparent */
-  backdrop-filter: blur(4px);
-  border: 1px solid rgba(255,255,255,0.2);
+  background-color: #ffffff;
+  color: rgb(17 24 39); /* gray-900 */
+  border: 1px solid rgba(229, 231, 235, 1);
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+              0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
 }
+
+
+
+html.dark .card {
+  background-color: rgba(31, 41, 55, 0.95);
+  color: rgb(243 244 246); /* gray-100 */
+  border-color: rgba(55, 65, 81, 1);
+}
+
+
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* =====================
+   FLOAT ANIMATION
+===================== */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-18px);
+  }
+}
+
